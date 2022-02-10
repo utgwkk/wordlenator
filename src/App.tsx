@@ -3,13 +3,23 @@ import React, { CSSProperties, useMemo, useReducer } from "react";
 import styles from "./App.module.css";
 
 export function App() {
+  const restCharacterNum = 25;
   return (
     <div className={styles.board}>
-      {Array.from("arisecough....................").map((ch, i) => (
+      {Array.from("arise").map((ch, i) => (
         <Character key={i} character={ch} />
       ))}
+      {Array(restCharacterNum)
+        .fill(0)
+        .map((_, i) => (
+          <PendingCharacter />
+        ))}
     </div>
   );
+}
+
+function PendingCharacter() {
+  return <button className={styles.tile} disabled></button>;
 }
 
 type Status = "DEFAULT" | "NONE" | "HIT" | "BLOW";
