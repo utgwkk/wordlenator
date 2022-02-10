@@ -38,16 +38,19 @@ function Character({ character }: CharacterProps) {
         return {
           color: "white",
           backgroundColor: "#787c7e",
+          border: "0",
         };
       case "HIT":
         return {
           color: "white",
           backgroundColor: "#6aaa64",
+          border: "0",
         };
       case "BLOW":
         return {
           color: "white",
           backgroundColor: "#c9b458",
+          border: "0",
         };
       default:
         return {
