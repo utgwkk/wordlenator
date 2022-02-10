@@ -5,15 +5,18 @@ import styles from "./App.module.css";
 export function App() {
   const restCharacterNum = 25;
   return (
-    <div className={styles.board}>
-      {Array.from("arise").map((ch, i) => (
-        <Character key={i} character={ch} />
-      ))}
-      {Array(restCharacterNum)
-        .fill(0)
-        .map((_, i) => (
-          <PendingCharacter />
+    <div>
+      <div className={styles.board}>
+        {Array.from("arise").map((ch, i) => (
+          <Character key={i} character={ch} />
         ))}
+        {Array(restCharacterNum)
+          .fill(0)
+          .map((_, i) => (
+            <PendingCharacter />
+          ))}
+      </div>
+      <button>Not in word list</button>
     </div>
   );
 }
