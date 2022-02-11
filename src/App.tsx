@@ -28,12 +28,12 @@ export function App() {
     (inputStatus, index) => {
       if (index === -1) {
         // reset
-        return ["DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT"];
+        return ["NONE", "NONE", "NONE", "NONE", "NONE"];
       }
       const current = inputStatus[index];
       let next: Status;
       switch (current) {
-        case "DEFAULT":
+        case "NONE":
           next = "HIT";
           break;
         case "HIT":
@@ -42,9 +42,6 @@ export function App() {
         case "BLOW":
           next = "NONE";
           break;
-        case "NONE":
-          next = "HIT";
-          break;
       }
       return [
         ...inputStatus.slice(0, index),
@@ -52,7 +49,7 @@ export function App() {
         ...inputStatus.slice(index + 1),
       ];
     },
-    ["DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT"]
+    ["NONE", "NONE", "NONE", "NONE", "NONE"]
   );
 
   const restCharacterNum = useMemo(

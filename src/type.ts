@@ -1,1 +1,1 @@
-export type Status = "DEFAULT" | "NONE" | "HIT" | "BLOW";
+export type Status = "NONE" | "NONE" | "HIT" | "BLOW";

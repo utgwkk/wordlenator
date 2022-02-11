@@ -76,9 +76,6 @@ export class Solver {
           this.chars.set(ch, { status: "NONE" });
           availableCharsByPosition.delete(ch);
           break;
-        default:
-          // noop
-          break;
       }
     }
     this.filterCandidateWords();
