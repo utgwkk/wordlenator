@@ -78,11 +78,11 @@ export function App() {
     try {
       nextWord = solver.chooseWord(attemptNum + 1);
     } catch (ex) {
-      window.alert("Oops! Wordlenator got crashed...")
+      window.alert("Oops! Wordlenator got crashed...");
       console.error(ex);
       return;
     }
-      
+
     setInput(nextWord);
     setAttemptNum((curr) => curr + 1);
   }, [attemptNum, input, inputStatus]);
@@ -115,7 +115,7 @@ export function App() {
           ))}
       </div>
       <button onClick={handleFeedback} disabled={finished}>
-        Feedback result
+        Submit
       </button>
     </div>
   );
