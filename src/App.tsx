@@ -8,7 +8,7 @@ import React, {
 } from "react";
 
 import styles from "./App.module.css";
-import { Solver } from "./solver";
+import { NoCandidateError, Solver } from "./solver";
 import { Status } from "./type";
 
 type Result = { input: string; status: Status[] };
@@ -76,9 +76,13 @@ export function App() {
     try {
       nextWord = solver.chooseWord(attemptNum + 1);
     } catch (ex) {
-      window.alert("Oops! Wordlenator got crashed...");
-      console.error(ex);
       setFinised(true);
+      if (ex instanceof NoCandidateError) {
+        window.alert("Looks like Wordlenator's dictionary doesn't contain your word.")
+      } else {
+        window.alert("Oops! Wordlenator got crashed...");
+        console.error(ex);
+      }
       return;
     }
 

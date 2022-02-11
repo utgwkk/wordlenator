@@ -18,6 +18,8 @@ type CharStatus =
 
 type Predicate = (word: string) => boolean;
 
+export class NoCandidateError extends Error {}
+
 const ALPHABETS = "abcdefghijklmnopqrstuvwxyz";
 
 export class Solver {
@@ -50,7 +52,7 @@ export class Solver {
     const words = Array.from(this.candidateWords).filter((word) => pred(word));
 
     if (words.length === 0) {
-      throw new Error("no candidate words");
+      throw new NoCandidateError();
     }
 
     return words[Math.floor(Math.random() * words.length)];
