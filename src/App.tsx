@@ -132,7 +132,7 @@ export function App() {
         .join("\n");
     const text = `Wordlenator ${displayAttemptNum}/6\n\n${resultsToStr(
       results
-    )}`;
+    )}\n\nhttps://sugarheart.utgw.net/wordlenator/`;
     navigator.clipboard.writeText(text).then(() => {
       window.alert("Copied to clipboard");
     });
