@@ -161,10 +161,11 @@ export function App() {
                   onClick={() => !finished && changeInputStatus(i)}
                 />
               ))
-            : Array(5)
+            : attemptNum <= 5 &&
+              Array(5)
                 .fill(0)
                 .map((_, i) => <PendingCharacter key={i} />)}
-          {Array(restCharacterNum)
+          {Array(Math.max(restCharacterNum, 0))
             .fill(0)
             .map((_, i) => (
               <PendingCharacter key={i} />
