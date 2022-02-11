@@ -91,10 +91,6 @@ export class Solver {
   }
 
   private buildPredicate(): Predicate {
-    const noneChars = Array.from(this.chars.entries())
-      .filter(([_, s]) => s.status === "NONE")
-      .map(([ch]) => ch);
-    const noneCharsRe = new RegExp(`[${noneChars.join()}]`);
     const blowChars = Array.from(this.chars.entries())
       .filter(([_, s]) => s.status === "BLOW")
       .map(([ch]) => ch);
@@ -111,10 +107,6 @@ export class Solver {
       }
 
       if (!hitWordRe.test(word)) {
-        return false;
-      }
-
-      if (noneChars.length > 0 && noneCharsRe.test(word)) {
         return false;
       }
 
