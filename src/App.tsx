@@ -74,7 +74,16 @@ export function App() {
     putResults({ input, status: inputStatus });
     changeInputStatus(-1);
     solver.getFeedback(input, inputStatus);
-    setInput(solver.chooseWord(attemptNum + 1));
+    let nextWord: string;
+    try {
+      nextWord = solver.chooseWord(attemptNum + 1);
+    } catch (ex) {
+      window.alert("Oops! Wordlenator got crashed...")
+      console.error(ex);
+      return;
+    }
+      
+    setInput(nextWord);
     setAttemptNum((curr) => curr + 1);
   }, [attemptNum, input, inputStatus]);
 
