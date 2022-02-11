@@ -63,6 +63,10 @@ export function App() {
   const handleFeedback = useCallback(() => {
     if (isAnswer(inputStatus)) {
       window.alert("Wordlenator's win!");
+      putResults({ input, status: inputStatus });
+      changeInputStatus(-1);
+      setAttemptNum((curr) => curr + 1);
+      setInput("");
       setFinised(true);
       return;
     }
@@ -78,7 +82,9 @@ export function App() {
     } catch (ex) {
       setFinised(true);
       if (ex instanceof NoCandidateError) {
-        window.alert("Looks like Wordlenator's dictionary doesn't contain your word.")
+        window.alert(
+          "Looks like Wordlenator's dictionary doesn't contain your word."
+        );
       } else {
         window.alert("Oops! Wordlenator got crashed...");
         console.error(ex);
@@ -91,6 +97,42 @@ export function App() {
     setInput(nextWord);
     setAttemptNum((curr) => curr + 1);
   }, [attemptNum, input, inputStatus]);
+
+  const handleShare = useCallback(() => {
+    if (!finished) {
+      return;
+    }
+
+    const displayAttemptNum =
+      results[results.length - 1] &&
+      isAnswer(results[results.length - 1].status)
+        ? attemptNum
+        : "X";
+
+    const resultsToStr = (results: Result[]) =>
+      results
+        .map((r) =>
+          r.status
+            .map((s) => {
+              switch (s) {
+                case "HIT":
+                  return "🟩";
+                case "BLOW":
+                  return "🟨";
+                default:
+                  return "⬜";
+              }
+            })
+            .join("")
+        )
+        .join("\n");
+    const text = `Wordlenator ${displayAttemptNum}/6\n\n${resultsToStr(
+      results
+    )}`;
+    navigator.clipboard.writeText(text).then(() => {
+      window.alert("Copied to clipboard");
+    });
+  }, [attemptNum, finished, results]);
 
   return (
     <div>
@@ -106,14 +148,18 @@ export function App() {
               />
             ))
           )}
-          {Array.from(input).map((ch, i) => (
-            <Character
-              key={i}
-              character={ch}
-              status={inputStatus[i]}
-              onClick={() => !finished && changeInputStatus(i)}
-            />
-          ))}
+          {input
+            ? Array.from(input).map((ch, i) => (
+                <Character
+                  key={i}
+                  character={ch}
+                  status={inputStatus[i]}
+                  onClick={() => !finished && changeInputStatus(i)}
+                />
+              ))
+            : Array(5)
+                .fill(0)
+                .map((_, i) => <PendingCharacter key={i} />)}
           {Array(restCharacterNum)
             .fill(0)
             .map((_, i) => (
@@ -130,6 +176,13 @@ export function App() {
           Submit
         </button>
       </div>
+      {finished && navigator.clipboard && (
+        <div className={styles.buttonContainer}>
+          <button className={styles.shareButton} onClick={handleShare}>
+            Share
+          </button>
+        </div>
+      )}
     </div>
   );
 }
