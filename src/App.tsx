@@ -72,6 +72,10 @@ export function App() {
     }
     if (attemptNum === 5) {
       window.alert("Wordlenator's lose...");
+      putResults({ input, status: inputStatus });
+      changeInputStatus(-1);
+      setAttemptNum((curr) => curr + 1);
+      setInput("");
       setFinised(true);
       return;
     }
