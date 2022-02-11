@@ -21,3 +21,19 @@
     box-sizing: border-box;
     text-transform: uppercase;
 }
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.buttonContainer {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.submitButton {
+    width: 100%;
+    height: 4rem;
+}

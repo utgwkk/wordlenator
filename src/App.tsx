@@ -89,34 +89,42 @@ export function App() {
 
   return (
     <div>
-      <div className={styles.board}>
-        {results.map((result) =>
-          Array.from(result.input).map((ch, i) => (
+      <div className={styles.container}>
+        <div className={styles.board}>
+          {results.map((result) =>
+            Array.from(result.input).map((ch, i) => (
+              <Character
+                key={i}
+                character={ch}
+                status={result.status[i]}
+                onClick={() => {}}
+              />
+            ))
+          )}
+          {Array.from(input).map((ch, i) => (
             <Character
               key={i}
               character={ch}
-              status={result.status[i]}
-              onClick={() => {}}
+              status={inputStatus[i]}
+              onClick={() => !finished && changeInputStatus(i)}
             />
-          ))
-        )}
-        {Array.from(input).map((ch, i) => (
-          <Character
-            key={i}
-            character={ch}
-            status={inputStatus[i]}
-            onClick={() => !finished && changeInputStatus(i)}
-          />
-        ))}
-        {Array(restCharacterNum)
-          .fill(0)
-          .map((_, i) => (
-            <PendingCharacter key={i} />
           ))}
+          {Array(restCharacterNum)
+            .fill(0)
+            .map((_, i) => (
+              <PendingCharacter key={i} />
+            ))}
+        </div>
       </div>
-      <button onClick={handleFeedback} disabled={finished}>
-        Submit
-      </button>
+      <div className={styles.buttonContainer}>
+        <button
+          className={styles.submitButton}
+          onClick={handleFeedback}
+          disabled={finished}
+        >
+          Submit
+        </button>
+      </div>
     </div>
   );
 }
