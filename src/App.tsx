@@ -1,14 +1,92 @@
-import React, { CSSProperties, useMemo, useReducer } from "react";
+import React, {
+  CSSProperties,
+  Reducer,
+  useCallback,
+  useMemo,
+  useReducer,
+  useState,
+} from "react";
 
 import styles from "./App.module.css";
+import { Solver } from "./solver";
+
+type Result = { input: string; status: Status[] };
+
+const solver = new Solver();
 
 export function App() {
-  const restCharacterNum = 25;
+  const [results, putResults] = useReducer<Reducer<Result[], Result>>(
+    (results, newResult) => [...results, newResult],
+    []
+  );
+  const [input, setInput] = useState(() => solver.chooseWord(0));
+  const [attemptNum, setAttemptNum] = useState(0);
+  const [inputStatus, changeInputStatus] = useReducer<
+    Reducer<Status[], number>
+  >(
+    (inputStatus, index) => {
+      if (index === -1) {
+        // reset
+        return ["DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT"];
+      }
+      const current = inputStatus[index];
+      let next: Status;
+      switch (current) {
+        case "DEFAULT":
+          next = "HIT";
+          break;
+        case "HIT":
+          next = "BLOW";
+          break;
+        case "BLOW":
+          next = "NONE";
+          break;
+        case "NONE":
+          next = "HIT";
+          break;
+      }
+      return [
+        ...inputStatus.slice(0, index),
+        next,
+        ...inputStatus.slice(index + 1),
+      ];
+    },
+    ["DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT"]
+  );
+
+  const restCharacterNum = useMemo(
+    () => 25 - results.length * 5,
+    [results.length]
+  );
+
+  const handleFeedback = useCallback(() => {
+    putResults({ input, status: inputStatus });
+    changeInputStatus(-1);
+    // TODO: send feedback to solver
+    setInput(solver.chooseWord(attemptNum + 1));
+    setAttemptNum((curr) => curr + 1);
+  }, [attemptNum, input, inputStatus]);
+
   return (
     <div>
       <div className={styles.board}>
-        {Array.from("arise").map((ch, i) => (
-          <Character key={i} character={ch} />
+        {results.map((result) =>
+          Array.from(result.input).map((ch, i) => (
+            <Character
+              key={i}
+              character={ch}
+              status={result.status[i]}
+              onClick={() => {}}
+            />
+          ))
+        )}
+        {Array.from(input).map((ch, i) => (
+          <Character
+            key={i}
+            character={ch}
+            status={inputStatus[i]}
+            onClick={() => changeInputStatus(i)}
+          />
         ))}
         {Array(restCharacterNum)
           .fill(0)
@@ -16,7 +94,7 @@ export function App() {
             <PendingCharacter />
           ))}
       </div>
-      <button>Not in word list</button>
+      <button onClick={handleFeedback}>Feedback result</button>
     </div>
   );
 }
@@ -29,26 +107,11 @@ type Status = "DEFAULT" | "NONE" | "HIT" | "BLOW";
 
 type CharacterProps = {
   character: string;
+  status: Status;
+  onClick: () => void;
 };
 
-function Character({ character }: CharacterProps) {
-  const [status, dispatch] = useReducer<(c: Status) => Status, null>(
-    (current) => {
-      switch (current) {
-        case "DEFAULT":
-          return "HIT";
-        case "HIT":
-          return "BLOW";
-        case "BLOW":
-          return "NONE";
-        case "NONE":
-          return "HIT";
-      }
-    },
-    null,
-    () => "DEFAULT"
-  );
-
+function Character({ character, status, onClick }: CharacterProps) {
   const style = useMemo<CSSProperties>(() => {
     switch (status) {
       case "NONE":
@@ -78,7 +141,7 @@ function Character({ character }: CharacterProps) {
   }, [status]);
 
   return (
-    <button className={styles.tile} onClick={dispatch} style={style}>
+    <button className={styles.tile} style={style} onClick={onClick}>
       {character}
     </button>
   );
