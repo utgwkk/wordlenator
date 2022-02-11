@@ -25,6 +25,7 @@ class Questioner {
     Array.from(input).forEach((ch, i) => {
       if (ch === this.answer[i]) {
         result.push("HIT");
+        consumeMap.set(ch, consumeMap.get(ch)! - 1);
       } else if (this.answer.includes(ch) && consumeMap.get(ch)! > 0) {
         result.push("BLOW");
         consumeMap.set(ch, consumeMap.get(ch)! - 1);
