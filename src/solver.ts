@@ -54,6 +54,9 @@ export class Solver implements ISolver {
       throw new NoCandidateError();
     }
 
+    if (process.env.NODE_ENV !== "test") {
+      console.debug(`choose from ${words.length} words`);
+    }
     return words[Math.floor(Math.random() * words.length)];
   }
 
