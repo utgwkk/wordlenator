@@ -9,11 +9,11 @@ import React, {
 
 import styles from "./App.module.css";
 import { NoCandidateError, Solver } from "./solver";
-import { Status } from "./type";
+import { ISolver, Status } from "./type";
 
 type Result = { input: string; status: Status[] };
 
-const solver = new Solver();
+const solver: ISolver = new Solver();
 
 const isAnswer = (status: Status[]) => status.every((s) => s === "HIT");
 

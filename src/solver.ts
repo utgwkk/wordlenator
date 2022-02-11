@@ -1,5 +1,5 @@
 import { ALL_WORDS } from "./dictionary";
-import { Status } from "./type";
+import { ISolver, Status } from "./type";
 
 type CharStatus =
   | {
@@ -22,7 +22,7 @@ export class NoCandidateError extends Error {}
 
 const ALPHABETS = "abcdefghijklmnopqrstuvwxyz";
 
-export class Solver {
+export class Solver implements ISolver {
   private candidateWords = new Set(ALL_WORDS.slice());
   private chars = new Map<string, CharStatus>(
     Array.from(ALPHABETS).map((ch) => [ch, { status: "UNUSED" }])
