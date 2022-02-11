@@ -92,7 +92,7 @@ export function App() {
         {Array(restCharacterNum)
           .fill(0)
           .map((_, i) => (
-            <PendingCharacter />
+            <PendingCharacter key={i} />
           ))}
       </div>
       <button onClick={handleFeedback}>Feedback result</button>
