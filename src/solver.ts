@@ -48,8 +48,8 @@ export class Solver implements ISolver {
   }
 
   private chooseInputByChars(): string {
-    const pred = this.buildPredicate();
-    const words = Array.from(this.candidateWords).filter((word) => pred(word));
+    const words = Array.from(this.candidateWords);
+    this.log(`choose from ${words.length} candidates`);
 
     if (words.length === 0) {
       throw new NoCandidateError();
