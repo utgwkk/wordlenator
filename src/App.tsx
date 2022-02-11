@@ -200,7 +200,11 @@ export function App() {
 }
 
 function PendingCharacter() {
-  return <button className={styles.tile} disabled></button>;
+  return (
+    <button className={styles.tile} disabled>
+      &nbsp;
+    </button>
+  );
 }
 
 type CharacterProps = {
