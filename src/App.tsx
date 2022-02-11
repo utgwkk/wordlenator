@@ -9,6 +9,7 @@ import React, {
 
 import styles from "./App.module.css";
 import { Solver } from "./solver";
+import { Status } from "./type";
 
 type Result = { input: string; status: Status[] };
 
@@ -62,7 +63,7 @@ export function App() {
   const handleFeedback = useCallback(() => {
     putResults({ input, status: inputStatus });
     changeInputStatus(-1);
-    // TODO: send feedback to solver
+    solver.getFeedback(input, inputStatus);
     setInput(solver.chooseWord(attemptNum + 1));
     setAttemptNum((curr) => curr + 1);
   }, [attemptNum, input, inputStatus]);
@@ -102,8 +103,6 @@ export function App() {
 function PendingCharacter() {
   return <button className={styles.tile} disabled></button>;
 }
-
-type Status = "DEFAULT" | "NONE" | "HIT" | "BLOW";
 
 type CharacterProps = {
   character: string;
