@@ -32,18 +32,22 @@ type CharacterProps = {
 };
 
 function Character({ character }: CharacterProps) {
-  const [status, reduce] = useReducer((current: Status) => {
-    switch (current) {
-      case "DEFAULT":
-        return "HIT";
-      case "HIT":
-        return "BLOW";
-      case "BLOW":
-        return "NONE";
-      case "NONE":
-        return "DEFAULT";
-    }
-  }, "DEFAULT");
+  const [status, reduce] = useReducer<(c: Status) => Status, null>(
+    (current) => {
+      switch (current) {
+        case "DEFAULT":
+          return "HIT";
+        case "HIT":
+          return "BLOW";
+        case "BLOW":
+          return "NONE";
+        case "NONE":
+          return "HIT";
+      }
+    },
+    null,
+    () => "DEFAULT"
+  );
 
   const style = useMemo<CSSProperties>(() => {
     switch (status) {
