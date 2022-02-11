@@ -84,6 +84,9 @@ export function App() {
     try {
       nextWord = solver.chooseWord(attemptNum + 1);
     } catch (ex) {
+      putResults({ input, status: inputStatus });
+      changeInputStatus(-1);
+      setInput("");
       setFinised(true);
       if (ex instanceof NoCandidateError) {
         window.alert(
