@@ -41,7 +41,7 @@ describe("Solver", () => {
   test.each(ALL_WORDS.map((x) => [x]))("solve(%s)", (answer) => {
     const questioner = new Questioner(answer);
     const solver = new Solver();
-    for (let attemptNum = 0; attemptNum < 1000; attemptNum++) {
+    for (let attemptNum = 0; attemptNum < 50; attemptNum++) {
       const input = solver.chooseWord(attemptNum);
       if (input === answer) {
         return;
