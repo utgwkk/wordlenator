@@ -41,7 +41,7 @@ export class Solver implements ISolver {
     if (attemptNum === 0) {
       return "arise";
     } else if (attemptNum === 1) {
-      return "cough";
+      return ["cough", "could"][Math.floor(Math.random() * 2)];
     } else {
       return this.chooseInputByChars();
     }
