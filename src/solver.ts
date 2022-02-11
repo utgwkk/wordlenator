@@ -62,7 +62,6 @@ export class Solver implements ISolver {
 
   public getFeedback(input: string, result: Status[]): void {
     this.usedWords.add(input);
-    const hitChars = new Set<string>();
     const blowChars = new Set<string>();
     const excludedChars = new Set<string>();
     for (let i = 0; i < 5; i++) {
@@ -74,7 +73,6 @@ export class Solver implements ISolver {
           this.chars.set(ch, { status: "HIT", index: i });
           availableCharsByPosition.clear();
           availableCharsByPosition.add(ch);
-          hitChars.add(ch);
           break;
         case "BLOW":
           this.chars.set(ch, { status: "BLOW" });
@@ -89,7 +87,7 @@ export class Solver implements ISolver {
       }
     }
     excludedChars.forEach((ch) => {
-      if (!(hitChars.has(ch) && !blowChars.has(ch))) {
+      if (blowChars.has(ch)) {
         return;
       }
       this.availableCharsByPosition.forEach((chars) => {
