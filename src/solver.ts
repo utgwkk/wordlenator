@@ -60,6 +60,8 @@ export class Solver {
 
   public getFeedback(input: string, result: Status[]): void {
     this.usedWords.add(input);
+    const includedChars = new Set<string>();
+    const excludedChars = new Set<string>();
     for (let i = 0; i < 5; i++) {
       const ch = input[i];
       const res = result[i];
@@ -69,17 +71,26 @@ export class Solver {
           this.chars.set(ch, { status: "HIT", index: i });
           availableCharsByPosition.clear();
           availableCharsByPosition.add(ch);
+          includedChars.add(ch);
           break;
         case "BLOW":
           this.chars.set(ch, { status: "BLOW" });
           availableCharsByPosition.delete(ch);
+          includedChars.add(ch);
           break;
         case "NONE":
           this.chars.set(ch, { status: "NONE" });
           availableCharsByPosition.delete(ch);
+          excludedChars.add(ch);
           break;
       }
     }
+    excludedChars.forEach((ch) => {
+      if (includedChars.has(ch)) {
+        return;
+      }
+      this.availableCharsByPosition.forEach((chars) => chars.delete(ch));
+    });
     this.filterCandidateWords();
   }
 
