@@ -71,8 +71,6 @@ export function App() {
       setFinised(true);
       return;
     }
-    putResults({ input, status: inputStatus });
-    changeInputStatus(-1);
     solver.getFeedback(input, inputStatus);
     let nextWord: string;
     try {
@@ -80,9 +78,12 @@ export function App() {
     } catch (ex) {
       window.alert("Oops! Wordlenator got crashed...");
       console.error(ex);
+      setFinised(true);
       return;
     }
 
+    putResults({ input, status: inputStatus });
+    changeInputStatus(-1);
     setInput(nextWord);
     setAttemptNum((curr) => curr + 1);
   }, [attemptNum, input, inputStatus]);
