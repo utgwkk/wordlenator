@@ -49,7 +49,6 @@ export class Solver implements ISolver {
 
   private chooseInputByChars(): string {
     const words = Array.from(this.candidateWords);
-    this.log(`choose from ${words.length} candidates`);
 
     if (words.length === 0) {
       throw new NoCandidateError();
