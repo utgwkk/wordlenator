@@ -144,6 +144,10 @@ export function App() {
   return (
     <div>
       <h1 className={styles.header}>Wordlenator</h1>
+      <div className={styles.memo}>
+        memo for your word:
+        <input type="text" maxLength={5} />
+      </div>
       <div className={styles.container}>
         <div className={styles.board}>
           {results.map((result) =>

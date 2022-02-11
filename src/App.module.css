@@ -3,6 +3,12 @@
     text-align: center;
 }
 
+.memo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.5em;
+}
+
 .board {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
