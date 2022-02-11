@@ -32,7 +32,7 @@ type CharacterProps = {
 };
 
 function Character({ character }: CharacterProps) {
-  const [status, reduce] = useReducer<(c: Status) => Status, null>(
+  const [status, dispatch] = useReducer<(c: Status) => Status, null>(
     (current) => {
       switch (current) {
         case "DEFAULT":
@@ -78,7 +78,7 @@ function Character({ character }: CharacterProps) {
   }, [status]);
 
   return (
-    <button className={styles.tile} onClick={reduce} style={style}>
+    <button className={styles.tile} onClick={dispatch} style={style}>
       {character}
     </button>
   );
