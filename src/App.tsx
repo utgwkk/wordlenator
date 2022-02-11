@@ -181,21 +181,20 @@ export function App() {
         </div>
       </div>
       <div className={styles.buttonContainer}>
-        <button
-          className={styles.submitButton}
-          onClick={handleFeedback}
-          disabled={finished}
-        >
-          Submit
-        </button>
-      </div>
-      {finished && navigator.clipboard && (
-        <div className={styles.buttonContainer}>
+        {finished && navigator.clipboard ? (
           <button className={styles.shareButton} onClick={handleShare}>
             Share
           </button>
-        </div>
-      )}
+        ) : (
+          <button
+            className={styles.submitButton}
+            onClick={handleFeedback}
+            disabled={finished}
+          >
+            Submit
+          </button>
+        )}
+      </div>
     </div>
   );
 }
