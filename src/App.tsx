@@ -15,7 +15,10 @@ type Result = { input: string; status: Status[] };
 
 const solver = new Solver();
 
+const isAnswer = (status: Status[]) => status.every((s) => s === "HIT");
+
 export function App() {
+  const [finished, setFinised] = useState(false);
   const [results, putResults] = useReducer<Reducer<Result[], Result>>(
     (results, newResult) => [...results, newResult],
     []
@@ -58,6 +61,16 @@ export function App() {
   );
 
   const handleFeedback = useCallback(() => {
+    if (isAnswer(inputStatus)) {
+      window.alert("Wordlenator's win!");
+      setFinised(true);
+      return;
+    }
+    if (attemptNum === 5) {
+      window.alert("Wordlenator's lose...");
+      setFinised(true);
+      return;
+    }
     putResults({ input, status: inputStatus });
     changeInputStatus(-1);
     solver.getFeedback(input, inputStatus);
@@ -83,7 +96,7 @@ export function App() {
             key={i}
             character={ch}
             status={inputStatus[i]}
-            onClick={() => changeInputStatus(i)}
+            onClick={() => !finished && changeInputStatus(i)}
           />
         ))}
         {Array(restCharacterNum)
@@ -92,7 +105,9 @@ export function App() {
             <PendingCharacter key={i} />
           ))}
       </div>
-      <button onClick={handleFeedback}>Feedback result</button>
+      <button onClick={handleFeedback} disabled={finished}>
+        Feedback result
+      </button>
     </div>
   );
 }
