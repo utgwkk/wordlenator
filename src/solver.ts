@@ -38,6 +38,10 @@ export class Solver implements ISolver {
   }
 
   public chooseWord(attemptNum: number): string {
+    if (process.env.NODE_ENV !== "test") {
+      console.debug(`choose from ${this.candidateWords.size} words`);
+    }
+
     if (attemptNum === 0) {
       return "arise";
     } else if (attemptNum === 1) {
@@ -54,9 +58,6 @@ export class Solver implements ISolver {
       throw new NoCandidateError();
     }
 
-    if (process.env.NODE_ENV !== "test") {
-      console.debug(`choose from ${words.length} words`);
-    }
     return words[Math.floor(Math.random() * words.length)];
   }
 
