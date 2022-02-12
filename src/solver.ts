@@ -47,11 +47,20 @@ export class Solver implements ISolver {
       return "tares";
     }
 
-    if (this.candidateWords.size >= 10 && attemptNum < 4) {
+    if (this.shouldChooseWithEntropy(attemptNum)) {
       return this.chooseInputByEntropy();
     }
 
     return this.chooseInputByChars();
+  }
+
+  private shouldChooseWithEntropy(attemptNum: number) {
+    return (
+      this.candidateWords.size >= 10 ||
+      (Array.from(this.chars.values()).filter((s) => s.status === "HIT")
+        .length >= 4 &&
+        attemptNum <= 4)
+    );
   }
 
   private calculateEntropy(word: string): number {
