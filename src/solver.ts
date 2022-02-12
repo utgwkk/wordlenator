@@ -102,8 +102,7 @@ export class Solver implements ISolver {
     const maxEntropy = wordEntropyPairs[0].entropy;
     const words = wordEntropyPairs
       .filter((p) => p.entropy === maxEntropy)
-      .map((p) => p.word)
-      .slice(0, 5);
+      .map((p) => p.word);
     return words[Math.floor(Math.random() * words.length)];
   }
 
