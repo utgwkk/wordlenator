@@ -89,7 +89,7 @@ export class Solver implements ISolver {
     }
 
     wordEntropyPairs.sort((a, b) => b.entropy - a.entropy);
-    const words = wordEntropyPairs.map((p) => p.word).slice(0, 3);
+    const words = wordEntropyPairs.map((p) => p.word).slice(0, 5);
     return words[Math.floor(Math.random() * words.length)];
   }
 
