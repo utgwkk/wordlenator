@@ -14,6 +14,7 @@ import { ISolver, Status } from "./type";
 type Result = { input: string; status: Status[] };
 
 const solver: ISolver = new Solver();
+const initialWord = solver.chooseWord(0);
 
 const isAnswer = (status: Status[]) => status.every((s) => s === "HIT");
 
@@ -23,7 +24,7 @@ export function App() {
     (results, newResult) => [...results, newResult],
     []
   );
-  const [input, setInput] = useState(() => solver.chooseWord(0));
+  const [input, setInput] = useState(initialWord);
   const [attemptNum, setAttemptNum] = useState(0);
   const [inputStatus, changeInputStatus] = useReducer<
     Reducer<Status[], number>
