@@ -44,10 +44,10 @@ export class Solver implements ISolver {
     }
 
     if (attemptNum === 0) {
-      return "arise";
+      return "tares";
     }
 
-    if (this.candidateWords.size > 5) {
+    if (this.candidateWords.size >= 10 && attemptNum < 4) {
       return this.chooseInputByEntropy();
     }
 
