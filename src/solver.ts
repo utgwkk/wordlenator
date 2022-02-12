@@ -1,5 +1,5 @@
 import { ALL_WORDS, ALPHABETS } from "./dictionary";
-import { ISolver, Status } from "./type";
+import { ISolver, NoCandidateError, Status } from "./type";
 
 type CharStatus =
   | {
@@ -17,8 +17,6 @@ type CharStatus =
     };
 
 type Predicate = (word: string) => boolean;
-
-export class NoCandidateError extends Error {}
 
 export class Solver implements ISolver {
   private candidateWords = new Set(ALL_WORDS.slice());

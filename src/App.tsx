@@ -8,8 +8,8 @@ import React, {
 } from "react";
 
 import styles from "./App.module.css";
-import { NoCandidateError, Solver } from "./solver";
-import { ISolver, Status } from "./type";
+import { Solver } from "./solver";
+import { ISolver, NoCandidateError, Status } from "./type";
 
 type Result = { input: string; status: Status[] };
 
