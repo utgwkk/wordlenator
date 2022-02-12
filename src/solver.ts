@@ -90,7 +90,7 @@ export class Solver implements ISolver {
     }
 
     wordEntropyPairs.sort((a, b) => b.entropy - a.entropy);
-    const maxEntropy = Math.max(...wordEntropyPairs.map((p) => p.entropy));
+    const maxEntropy = wordEntropyPairs[0].entropy;
     const words = wordEntropyPairs
       .filter((p) => p.entropy === maxEntropy)
       .map((p) => p.word)
