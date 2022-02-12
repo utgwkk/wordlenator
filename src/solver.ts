@@ -1,4 +1,4 @@
-import { ALL_WORDS } from "./dictionary";
+import { ALL_WORDS, ALPHABETS } from "./dictionary";
 import { ISolver, Status } from "./type";
 
 type CharStatus =
@@ -20,17 +20,19 @@ type Predicate = (word: string) => boolean;
 
 export class NoCandidateError extends Error {}
 
-const ALPHABETS = "abcdefghijklmnopqrstuvwxyz";
-
 export class Solver implements ISolver {
   private candidateWords = new Set(ALL_WORDS.slice());
   private chars = new Map<string, CharStatus>(
-    Array.from(ALPHABETS).map((ch) => [ch, { status: "UNUSED" }])
+    ALPHABETS.map((ch) => [ch, { status: "UNUSED" }])
   );
+  private usedPositionsByChar: Map<string, Set<number>>;
   private usedWords = new Set<string>();
   private availableCharsByPosition: Map<number, Set<string>>;
 
   constructor() {
+    this.usedPositionsByChar = new Map(
+      ALPHABETS.map((ch) => [ch, new Set<number>()])
+    );
     this.availableCharsByPosition = new Map<number, Set<string>>();
     for (let i = 0; i < 5; i++) {
       this.availableCharsByPosition.set(i, new Set(ALPHABETS));
@@ -44,11 +46,51 @@ export class Solver implements ISolver {
 
     if (attemptNum === 0) {
       return "arise";
-    } else if (attemptNum === 1) {
-      return ["cough", "could"][Math.floor(Math.random() * 2)];
-    } else {
-      return this.chooseInputByChars();
     }
+
+    if (this.candidateWords.size > 5) {
+      return this.chooseInputByEntropy();
+    }
+
+    return this.chooseInputByChars();
+  }
+
+  private calculateEntropy(word: string): number {
+    const chars = new Set(word);
+    let entropy = chars.size * 20;
+    Array.from(word).forEach((ch, i) => {
+      const { status } = this.chars.get(ch)!;
+      if (status === "HIT") {
+        entropy -= 20;
+      } else if (status === "BLOW") {
+        if (this.usedPositionsByChar.get(ch)!.has(i)) {
+          entropy -= 100;
+        } else {
+          entropy -= 5;
+        }
+      } else if (status === "NONE") {
+        entropy -= 100;
+      } else {
+        entropy += 20;
+      }
+    });
+    return entropy;
+  }
+
+  private chooseInputByEntropy(): string {
+    const allWords = ALL_WORDS;
+    const wordEntropyPairs = allWords.map((w) => ({
+      word: w,
+      entropy: this.calculateEntropy(w),
+    }));
+
+    if (allWords.length === 0) {
+      throw new NoCandidateError();
+    }
+
+    wordEntropyPairs.sort((a, b) => b.entropy - a.entropy);
+    const words = wordEntropyPairs.map((p) => p.word).slice(0, 3);
+    return words[Math.floor(Math.random() * words.length)];
   }
 
   private chooseInputByChars(): string {
@@ -67,6 +109,7 @@ export class Solver implements ISolver {
     const excludedChars = new Set<string>();
     for (let i = 0; i < 5; i++) {
       const ch = input[i];
+      this.usedPositionsByChar.get(ch)!.add(i);
       const res = result[i];
       const availableCharsByPosition = this.availableCharsByPosition.get(i)!;
       switch (res) {

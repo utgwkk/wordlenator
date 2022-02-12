@@ -1,3 +1,5 @@
+export const ALPHABETS = Array.from("abcdefghijklmnopqrstuvwxyz");
+
 export const ALL_WORDS = Object.freeze([
   "aalii",
   "abaca",
