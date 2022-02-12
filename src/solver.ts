@@ -26,6 +26,7 @@ export class Solver implements ISolver {
   private usedPositionsByChar: Map<string, Set<number>>;
   private usedWords = new Set<string>();
   private availableCharsByPosition: Map<number, Set<string>>;
+  private excludedChars = new Set<string>();
 
   constructor() {
     this.usedPositionsByChar = new Map(
@@ -67,7 +68,9 @@ export class Solver implements ISolver {
           entropy -= 5;
         }
       } else if (status === "NONE") {
-        entropy -= 100;
+        if (this.excludedChars.has(ch)) {
+          entropy -= 100;
+        }
       } else {
         entropy += 20;
       }
@@ -138,6 +141,7 @@ export class Solver implements ISolver {
         }
         chars.delete(ch);
       });
+      this.excludedChars.add(ch);
     });
     this.filterCandidateWords();
   }
