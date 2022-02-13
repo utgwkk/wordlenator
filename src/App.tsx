@@ -80,9 +80,9 @@ export function App() {
       setFinised(true);
       return;
     }
-    solver.getFeedback(input, inputStatus);
     let nextWord: string;
     try {
+      solver.getFeedback(input, inputStatus);
       nextWord = solver.chooseWord(attemptNum + 1);
     } catch (ex) {
       putResults({ input, status: inputStatus });
