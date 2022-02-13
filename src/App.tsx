@@ -26,6 +26,7 @@ export function App() {
   );
   const [input, setInput] = useState(initialWord);
   const [attemptNum, setAttemptNum] = useState(0);
+  const [thinking, setThinking] = useState(false);
   const [inputStatus, changeInputStatus] = useReducer<
     Reducer<Status[], number>
   >(
@@ -80,30 +81,35 @@ export function App() {
       setFinised(true);
       return;
     }
-    let nextWord: string;
-    try {
-      solver.getFeedback(input, inputStatus);
-      nextWord = solver.chooseWord(attemptNum + 1);
-    } catch (ex) {
+    setThinking(true);
+    window.setTimeout(() => {
+      let nextWord: string;
+      try {
+        solver.getFeedback(input, inputStatus);
+        nextWord = solver.chooseWord(attemptNum + 1);
+      } catch (ex) {
+        putResults({ input, status: inputStatus });
+        changeInputStatus(-1);
+        setInput("");
+        setFinised(true);
+        if (ex instanceof NoCandidateError) {
+          window.alert(
+            "Looks like Wordlenator's dictionary doesn't contain your word."
+          );
+        } else {
+          window.alert("Oops! Wordlenator got crashed...");
+          console.error(ex);
+        }
+        return;
+      } finally {
+        setThinking(false);
+      }
+
       putResults({ input, status: inputStatus });
       changeInputStatus(-1);
-      setInput("");
-      setFinised(true);
-      if (ex instanceof NoCandidateError) {
-        window.alert(
-          "Looks like Wordlenator's dictionary doesn't contain your word."
-        );
-      } else {
-        window.alert("Oops! Wordlenator got crashed...");
-        console.error(ex);
-      }
-      return;
-    }
-
-    putResults({ input, status: inputStatus });
-    changeInputStatus(-1);
-    setInput(nextWord);
-    setAttemptNum((curr) => curr + 1);
+      setInput(nextWord);
+      setAttemptNum((curr) => curr + 1);
+    }, 0);
   }, [attemptNum, input, inputStatus]);
 
   const handleShare = useCallback(() => {
