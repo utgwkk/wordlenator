@@ -66,6 +66,9 @@ export class MinmaxSolver implements ISolver {
         tw2[indApp] = "*";
       }
     }
+
+    MinmaxSolver.responseVectorCache.set(cacheKey, msum);
+
     return msum;
   }
 
