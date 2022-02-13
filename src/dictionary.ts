@@ -15261,4 +15261,4 @@ export const CANDIDATES = [
   "zebra",
   "zesty",
   "zonal",
-]
+];
