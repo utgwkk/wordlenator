@@ -4,7 +4,7 @@ import { ISolver, NoCandidateError, Status } from "./type";
 // based on https://github.com/yotam-gafni/wordle_solver/blob/main/comb.py
 export class MinmaxSolver implements ISolver {
   private candidateWords = ALL_WORDS.slice();
-  private responseVectorCache = new Map<string, Status[]>();
+  private static responseVectorCache = new Map<string, Status[]>();
   private srMat = new Map<string, string[]>();
 
   public chooseWord(attemptNum: number): string {
@@ -47,8 +47,8 @@ export class MinmaxSolver implements ISolver {
   private calcResponseVector(w1: string, w2: string): Status[] {
     const cacheKey = `${w1},${w2}`;
 
-    if (this.responseVectorCache.has(cacheKey)) {
-      return this.responseVectorCache.get(cacheKey)!;
+    if (MinmaxSolver.responseVectorCache.has(cacheKey)) {
+      return MinmaxSolver.responseVectorCache.get(cacheKey)!;
     }
 
     const tw2 = Array.from(w2);
