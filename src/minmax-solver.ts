@@ -18,7 +18,6 @@ export class MinmaxSolver implements ISolver {
     const candidates = attemptNum === 0 ? ["aesir"] : ALL_WORDS;
 
     candidates.forEach((w1) => {
-      const mat = new Map<string, Status[]>();
       const rmat = new Map<string, string[]>();
 
       this.candidateWords.forEach((w2) => {
@@ -29,8 +28,6 @@ export class MinmaxSolver implements ISolver {
         } else {
           rmat.get(rmatKey)!.push(w2);
         }
-        const matKey = `${w1},${w2}`;
-        mat.set(matKey, msum);
       });
 
       const M = Math.max(...Array.from(rmat.values()).map((v) => v.length));
