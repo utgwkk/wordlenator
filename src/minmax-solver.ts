@@ -1,9 +1,9 @@
-import { ALL_WORDS } from "./dictionary";
+import { ALL_WORDS, CANDIDATES } from "./dictionary";
 import { ISolver, NoCandidateError, Status } from "./type";
 
 // based on https://github.com/yotam-gafni/wordle_solver/blob/main/comb.py
 export class MinmaxSolver implements ISolver {
-  private candidateWords = ALL_WORDS.slice();
+  private candidateWords = CANDIDATES.slice();
   private static responseVectorCache = new Map<string, Status[]>();
   private srMat = new Map<string, string[]>();
 
