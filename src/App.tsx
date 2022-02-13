@@ -8,12 +8,13 @@ import React, {
 } from "react";
 
 import styles from "./App.module.css";
+import { MinmaxSolver } from "./minmax-solver";
 import { Solver } from "./solver";
 import { ISolver, NoCandidateError, Status } from "./type";
 
 type Result = { input: string; status: Status[] };
 
-const solver: ISolver = new Solver();
+const solver: ISolver = new MinmaxSolver();
 const initialWord = solver.chooseWord(0);
 
 const isAnswer = (status: Status[]) => status.every((s) => s === "HIT");
