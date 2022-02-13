@@ -8,12 +8,12 @@ import React, {
 } from "react";
 
 import styles from "./App.module.css";
-import { Solver } from "./solver";
+import { MinmaxSolver } from "./minmax-solver";
 import { ISolver, NoCandidateError, Status } from "./type";
 
 type Result = { input: string; status: Status[] };
 
-const solver: ISolver = new Solver();
+const solver: ISolver = new MinmaxSolver();
 const initialWord = solver.chooseWord(0);
 
 const isAnswer = (status: Status[]) => status.every((s) => s === "HIT");
@@ -196,9 +196,9 @@ export function App() {
           <button
             className={styles.submitButton}
             onClick={handleFeedback}
-            disabled={finished}
+            disabled={finished || thinking}
           >
-            Submit
+            {thinking ? "Thinking..." : "Submit"}
           </button>
         )}
       </div>
